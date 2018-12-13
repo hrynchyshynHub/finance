@@ -25,5 +25,8 @@ public class AUser implements Serializable{
     private String fullName;
     private String login;
     private String password;
+    private Integer age;
 
+    private Integer monthIncoming;
+    private Integer dayOutgoings;
 }
