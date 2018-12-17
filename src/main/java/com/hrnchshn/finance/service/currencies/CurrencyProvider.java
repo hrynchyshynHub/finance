@@ -1,4 +1,4 @@
-package com.hrnchshn.finance.currencies;
+package com.hrnchshn.finance.service.currencies;
 
 import com.hrnchshn.finance.dto.CurrencyModel;
 

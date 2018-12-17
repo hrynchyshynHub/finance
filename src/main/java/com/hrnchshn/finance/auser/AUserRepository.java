@@ -1,8 +1,8 @@
 package com.hrnchshn.finance.auser;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.hrnchshn.finance.common.CommonRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AUserRepository extends JpaRepository<AUser, Long>{
+public interface AUserRepository extends CommonRepository<AUser> {
 }

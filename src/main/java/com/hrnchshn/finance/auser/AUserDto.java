@@ -1,33 +1,23 @@
 package com.hrnchshn.finance.auser;
 
-import java.util.List;
-import javax.persistence.*;
-
-import com.hrnchshn.finance.common.EntityBase;
-import com.hrnchshn.finance.note.Note;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-@Entity
 @Data
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class AUser extends EntityBase{
-
+public class AUserDto {
+    private Long id;
     private String nickname;
     private String fullName;
     private String login;
+    @JsonIgnore
     private String password;
     private Integer age;
-
-    @OneToMany(mappedBy = "user")
-    private List<Note> notes;
-
     private Double monthIncoming;
     private Double dayOutgoings;
-
 }

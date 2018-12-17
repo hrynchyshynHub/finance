@@ -1,7 +1,7 @@
-package com.hrnchshn.finance.currencies.impl;
+package com.hrnchshn.finance.service.currencies.impl;
 
 import com.google.gson.Gson;
-import com.hrnchshn.finance.currencies.CurrencyProvider;
+import com.hrnchshn.finance.service.currencies.CurrencyProvider;
 import com.hrnchshn.finance.dto.CurrencyModel;
 import com.hrnchshn.finance.dto.UaBankResponseElement;
 import com.hrnchshn.finance.transformers.BankUaToCurrencyModelTransformer;

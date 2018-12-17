@@ -6,6 +6,7 @@ public interface Api {
      * REST ENDPOINTS                      *
      * ************************************/
     String USER_PATH = "/user";
+    String CURRENCY_PATH = "/currency";
 
     /**************************************
      * Currencies                         *
