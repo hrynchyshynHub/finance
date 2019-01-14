@@ -10,7 +10,7 @@ public abstract class AbstractController<DtoEntity,
         S extends CommonService<DtoEntity>>
         implements CommonController<DtoEntity> {
 
-    private S service;
+    protected S service;
 
     @Autowired
     protected AbstractController(S service) {

@@ -8,7 +8,6 @@ import java.util.Stack;
 
 public class ReflectionUtils {
 
-
     public static Class getGenericParameterClass(final Class actualClass, final Class genericClass, final int parameterIndex) {
         if (!genericClass.isAssignableFrom(actualClass.getSuperclass())) {
             throw new IllegalArgumentException("Class " + genericClass.getName() + " is not a superclass of "

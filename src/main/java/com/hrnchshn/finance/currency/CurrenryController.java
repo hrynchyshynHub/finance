@@ -21,6 +21,4 @@ public class CurrenryController {
         CurrencyModel currencyModel = provider.getCurrency();
         return currencyModel;
     }
-
-
 }

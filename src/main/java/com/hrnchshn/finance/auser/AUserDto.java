@@ -18,6 +18,4 @@ public class AUserDto {
     @JsonIgnore
     private String password;
     private Integer age;
-    private Double monthIncoming;
-    private Double dayOutgoings;
 }
