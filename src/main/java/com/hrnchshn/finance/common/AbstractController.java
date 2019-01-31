@@ -1,8 +1,9 @@
 package com.hrnchshn.finance.common;
 
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @NoArgsConstructor
@@ -10,36 +11,35 @@ public abstract class AbstractController<DtoEntity,
         S extends CommonService<DtoEntity>>
         implements CommonController<DtoEntity> {
 
-    protected S service;
-
-    @Autowired
-    protected AbstractController(S service) {
-        this.service = service;
+    @Override
+    @PostMapping
+    public DtoEntity save(@RequestBody DtoEntity dtoEntity) {
+        return getService().save(dtoEntity);
     }
 
     @Override
-    public DtoEntity save(DtoEntity dtoEntity) {
-        return service.save(dtoEntity);
+    @GetMapping("/{id}")
+    public DtoEntity getById(@PathParam("id") Long id) {
+        return getService().findById(id);
     }
 
     @Override
-    public DtoEntity getById(Long id) {
-        return service.findById(id);
+    public List<DtoEntity> getAll() {
+        return getService().findAll(0L);
     }
 
     @Override
-    public List<DtoEntity> getAll(Long id) {
-        return service.findAll(id);
+    @PutMapping("/{id}")
+    public void update(@PathParam("id") Long id, DtoEntity e) {
+        getService().update(id, e);
     }
 
     @Override
-    public void update(Long id, DtoEntity e) {
-        service.update(id, e);
+    @DeleteMapping("/{id}")
+    public void delete(@PathParam("id") Long id) {
+        getService().delete(id);
     }
 
-    @Override
-    public void delete(Long id) {
-        service.delete(id);
-    }
+    protected abstract S getService();
 
 }

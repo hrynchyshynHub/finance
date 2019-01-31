@@ -18,5 +18,4 @@ public abstract class EntityBase implements Serializable {
     protected Long id;
     protected Timestamp created;
     protected String createdBy;
-
 }

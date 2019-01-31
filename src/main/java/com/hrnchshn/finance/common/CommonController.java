@@ -7,19 +7,15 @@ import java.util.List;
 
 public interface CommonController<DtoEntity> {
 
-    @PostMapping
-    DtoEntity save(@RequestBody DtoEntity entity);
+    DtoEntity save( DtoEntity entity);
 
-    @GetMapping("/{id}")
-    DtoEntity getById(@PathParam("id") Long id);
 
-    @GetMapping
-    List<DtoEntity> getAll(Long id);
+    DtoEntity getById(Long id);
 
-    @PutMapping("/{id}")
-    void update(@PathParam("id") Long id, DtoEntity e);
+    List<DtoEntity> getAll();
 
-    @DeleteMapping("/{id}")
-    void delete(@PathParam("id") Long id);
+    void update( Long id, DtoEntity e);
+
+    void delete(Long id);
 
 }
