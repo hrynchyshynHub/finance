@@ -8,7 +8,6 @@ import java.util.Map;
 
 
 /**
- *
  * @author ihr
  */
 public class WebCall {
@@ -70,71 +69,76 @@ public class WebCall {
         }
     }
 
-    public WebCallResponse execute() throws Exception {
-
-        WebCallResponse response = new WebCallResponse();
-
-        URL url_ = new URL(url);
-
-        HttpURLConnection urlConnection = (HttpURLConnection) url_.openConnection();
-        urlConnection.setDoOutput(true);
-        urlConnection.setDoInput(true);
-        urlConnection.setRequestMethod(httpVerb.name());
-        urlConnection.setConnectTimeout(15000);
-        urlConnection.setReadTimeout(15000);
-
-        for (Map.Entry<String, String> header : headers.entrySet()) {
-            urlConnection.setRequestProperty(header.getKey(), header.getValue());
-        }
-
-        if (httpVerb != HttpVerb.GET && httpVerb != HttpVerb.DELETE) {
-            urlConnection.setRequestProperty("Content-Type", getContentType());
-
-            switch (payloadType) {
-                case pdf:
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    bos.write((byte[]) payload);
-                    bos.writeTo(urlConnection.getOutputStream());
-                    bos.flush();
-                    bos.close();
-                    break;
-                default:
-                    try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8"))) {
-                        out.write((String) payload);
-                        out.flush();
-                    }
-                    break;
-            }
-        }
-
-        Reader reader = null;
+    public WebCallResponse execute() {
         try {
-            reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
-        } catch (Exception ex) {
-//            log.debug("Could not read success response: " + ex);
-            try {
-                reader = new BufferedReader(new InputStreamReader(urlConnection.getErrorStream(), "UTF-8"));
-            } catch (Exception exx) {
-//                log.debug("Could not read error response: " + exx);
-            }
-        } finally {
-            String responseBody = null;
-            if (reader != null) {
-                char[] arr = new char[8 * 1024];
-                StringBuilder buffer = new StringBuilder();
-                int numCharsRead;
-                while ((numCharsRead = reader.read(arr, 0, arr.length)) != -1) {
-                    buffer.append(arr, 0, numCharsRead);
-                }
-                reader.close();
-                responseBody = buffer.toString();
-                response.setHttpResponseBody(responseBody);
-                reader.close();
-            }
-        }
 
-        response.setHttpStatusCode(urlConnection.getResponseCode());
-        return response;
+            WebCallResponse response = new WebCallResponse();
+
+            URL url_ = new URL(url);
+
+            HttpURLConnection urlConnection = (HttpURLConnection) url_.openConnection();
+            urlConnection.setDoOutput(true);
+            urlConnection.setDoInput(true);
+            urlConnection.setRequestMethod(httpVerb.name());
+            urlConnection.setConnectTimeout(15000);
+            urlConnection.setReadTimeout(15000);
+
+            for (Map.Entry<String, String> header : headers.entrySet()) {
+                urlConnection.setRequestProperty(header.getKey(), header.getValue());
+            }
+
+            if (httpVerb != HttpVerb.GET && httpVerb != HttpVerb.DELETE) {
+                urlConnection.setRequestProperty("Content-Type", getContentType());
+
+                switch (payloadType) {
+                    case pdf:
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        bos.write((byte[]) payload);
+                        bos.writeTo(urlConnection.getOutputStream());
+                        bos.flush();
+                        bos.close();
+                        break;
+                    default:
+                        try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8"))) {
+                            out.write((String) payload);
+                            out.flush();
+                        }
+                        break;
+                }
+            }
+
+            Reader reader = null;
+            try {
+                reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
+            } catch (Exception ex) {
+//            log.debug("Could not read success response: " + ex);
+                try {
+                    reader = new BufferedReader(new InputStreamReader(urlConnection.getErrorStream(), "UTF-8"));
+                } catch (Exception exx) {
+//                log.debug("Could not read error response: " + exx);
+                }
+            } finally {
+                String responseBody = null;
+                if (reader != null) {
+                    char[] arr = new char[8 * 1024];
+                    StringBuilder buffer = new StringBuilder();
+                    int numCharsRead;
+                    while ((numCharsRead = reader.read(arr, 0, arr.length)) != -1) {
+                        buffer.append(arr, 0, numCharsRead);
+                    }
+                    reader.close();
+                    responseBody = buffer.toString();
+                    response.setHttpResponseBody(responseBody);
+                    reader.close();
+                }
+            }
+
+            response.setHttpStatusCode(urlConnection.getResponseCode());
+            return response;
+        } catch (Exception e) {
+
+        }
+        return null;
     }
 
 }

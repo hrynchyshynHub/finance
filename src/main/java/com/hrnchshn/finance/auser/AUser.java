@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 import com.hrnchshn.finance.common.EntityBase;
 import com.hrnchshn.finance.money.Money;
-import com.hrnchshn.finance.note.Note;
+import com.hrnchshn.finance.note.Task;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,7 +27,7 @@ public class AUser extends EntityBase{
     private Integer age;
 
     @OneToMany(mappedBy = "user")
-    private List<Note> notes;
+    private List<Task> tasks;
 
     private Double monthIncoming;
     private Double dayOutgoings;

@@ -1,6 +1,6 @@
 package com.hrnchshn.finance.service.currencies;
 
-import com.hrnchshn.finance.dto.CurrencyModel;
+import com.hrnchshn.finance.service.currencies.dto.CurrencyModel;
 
 import java.io.IOException;
 

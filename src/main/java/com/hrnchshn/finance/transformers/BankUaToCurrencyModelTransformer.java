@@ -1,7 +1,7 @@
 package com.hrnchshn.finance.transformers;
 
-import com.hrnchshn.finance.dto.CurrencyModel;
-import com.hrnchshn.finance.dto.UaBankResponseElement;
+import com.hrnchshn.finance.service.currencies.dto.CurrencyModel;
+import com.hrnchshn.finance.service.currencies.dto.UaBankResponseElement;
 
 import java.util.List;
 

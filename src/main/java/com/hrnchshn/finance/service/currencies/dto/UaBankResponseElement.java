@@ -1,4 +1,4 @@
-package com.hrnchshn.finance.dto;
+package com.hrnchshn.finance.service.currencies.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

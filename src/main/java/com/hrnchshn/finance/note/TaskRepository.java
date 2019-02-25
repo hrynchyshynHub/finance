@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
  * @author ivan.hrynchyshyn
  */
 @Repository
-public interface NoteRepository extends JpaRepository<Note, Long> {
+public interface TaskRepository extends JpaRepository<Task, Long> {
 
 }
