@@ -8,6 +8,7 @@ public interface Api {
     String USER_PATH = "/user";
     String NOTE_PATH = "/note";
     String CURRENCY_PATH = "/currency";
+    String TRANSACTIO_PATH = "/transaction";
 
     /**************************************
      * Currencies                         *

@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author ivan.hrynchyshyn
+ */
 @Data
 @NoArgsConstructor
 @Builder
@@ -14,7 +17,7 @@ public class AUserDto {
     private Long id;
     private String nickname;
     private String fullName;
-    private String login;
+    private String username;
     @JsonIgnore
     private String password;
     private Integer age;

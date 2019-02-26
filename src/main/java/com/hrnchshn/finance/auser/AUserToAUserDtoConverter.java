@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author ivan.hrynchyshyn
+ */
 @Component
 public class AUserToAUserDtoConverter implements EntityToDtoConverter<AUser, AUserDto> {
 
@@ -14,8 +17,8 @@ public class AUserToAUserDtoConverter implements EntityToDtoConverter<AUser, AUs
         setIfNotNull(user::setAge, aUserDto.getAge());
         setIfNotNull(user::setFullName, aUserDto.getFullName());
         setIfNotNull(user::setNickname, aUserDto.getNickname());
+        setIfNotNull(user::setUsername, aUserDto.getUsername());
         if(user.getPassword() == null) user.setPassword(aUserDto.getPassword());
-        if(user.getLogin() == null) user.setLogin(aUserDto.getLogin());
         return user;
     }
 
@@ -23,15 +26,11 @@ public class AUserToAUserDtoConverter implements EntityToDtoConverter<AUser, AUs
     public AUserDto doBackward(AUser aUser) {
         return AUserDto.builder()
                 .id(aUser.getId())
+                .username(aUser.getUsername())
                 .age(aUser.getAge())
                 .fullName(aUser.getFullName())
-                .login(aUser.getLogin())
                 .nickname(aUser.getNickname())
                 .build();
     }
 
-    @Override
-    public List<AUserDto> doBackward(List<AUser> entity) {
-        return entity.stream().map(this::doBackward).collect(Collectors.toList());
-    }
 }

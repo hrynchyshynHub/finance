@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-
+/**
+ * @author ivan.hrynchyshyn
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(Api.USER_PATH)

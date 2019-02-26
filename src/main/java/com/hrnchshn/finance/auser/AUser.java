@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
+import com.hrnchshn.finance.budget.Transaction;
 import com.hrnchshn.finance.common.EntityBase;
 import com.hrnchshn.finance.money.Money;
 import com.hrnchshn.finance.note.Task;
@@ -22,12 +23,14 @@ public class AUser extends EntityBase{
 
     private String nickname;
     private String fullName;
-    private String login;
+    private String username;
     private String password;
     private Integer age;
 
     @OneToMany(mappedBy = "user")
     private List<Task> tasks;
+    @OneToMany(mappedBy = "user")
+    private List<Transaction> transactions;
 
     private Double monthIncoming;
     private Double dayOutgoings;
@@ -41,10 +44,7 @@ public class AUser extends EntityBase{
         return "AUser{" +
                 "nickname='" + nickname + '\'' +
                 ", fullName='" + fullName + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
                 ", age=" + age +
-                ", dayOutgoings=" + dayOutgoings +
                 ", id=" + id +
                 '}';
     }
