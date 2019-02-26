@@ -15,4 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AUserController {
 
     private final AUserService userService;
+
+
 }

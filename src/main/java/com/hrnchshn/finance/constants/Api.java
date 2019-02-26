@@ -23,4 +23,9 @@ public interface Api {
     String UA_BANK_API = "http://bank-ua.com/export/exchange_rate_cash.json";
     String PRIVAT_BANK = "http://bank-ua.com/banks/privatbank/";
 
+     String AUTH_ENDPOINT = USER_PATH + "/auth";
+     String BEARER = "Bearer ";
+     String AUTH_HEADER = "Authorization";
+     String ROLE_KEY = "Role";
+
 }

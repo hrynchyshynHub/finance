@@ -19,13 +19,6 @@ public class FinanceApplicationTests {
 		System.out.println(noteTask.get());
 	}
 
-//	@Test
-//	public void supplyAsync() throws Exception{
-//		CompletableFuture<CurrencyModel> noteTask =
-//				CompletableFuture.supplyAsync(()-> new BankUaCurrencyProvider().getCurrency());
-//		System.out.println(noteTask.get());
-//	}
-
 	@Test
 	public void callback() throws Exception{
 		CompletableFuture<CurrencyModel> noteTask =

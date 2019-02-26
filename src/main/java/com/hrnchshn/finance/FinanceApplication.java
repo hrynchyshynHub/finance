@@ -1,35 +1,23 @@
 package com.hrnchshn.finance;
 
 
-import com.hrnchshn.finance.auser.AUser;
-import com.hrnchshn.finance.auser.AUserRepository;
-import org.springframework.boot.CommandLineRunner;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class FinanceApplication {
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(FinanceApplication.class, args);
 
-
-	}
-	@Bean
-	CommandLineRunner init(final AUserRepository userRepository) {
-
-		return new CommandLineRunner() {
-
-			@Override
-			public void run(String... arg0) throws Exception {
-				AUser user = AUser.builder().nickname("ivan")
-						.password("ivan")
-						.build();
-				userRepository.save(user);
-
-			}
-
-		};
 
 	}
 }

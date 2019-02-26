@@ -23,8 +23,8 @@ public class TransactionController {
     private final AUserRepository userService;
 
     @PostMapping
-    private TransactionDto createTransaction(@RequestBody TransactionDto transactionDto, Principal principal){
+    private TransactionDto createTransaction(@RequestBody TransactionDto transactionDto, Principal principal) {
         AUser user = userService.findByUsername(principal.getName());
-       return transactionService.createTransaction(transactionDto, user);
+        return transactionService.createTransaction(transactionDto, user);
     }
 }
