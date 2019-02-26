@@ -1,6 +1,5 @@
 package com.hrnchshn.finance.auser;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +17,6 @@ public class AUserDto {
     private String nickname;
     private String fullName;
     private String username;
-    @JsonIgnore
     private String password;
     private Integer age;
 }

@@ -7,6 +7,7 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author ivan.hrynchyshyn
@@ -17,7 +18,7 @@ public class FinanceUserDetails implements UserDetails {
     private String username;
     private String password;
     private Boolean locked;
-    private Set<GrantedAuthority> authorities;
+    private Set<GrantedAuthority> authorities = new TreeSet<>();
 
     @Override
     public boolean isAccountNonExpired() {

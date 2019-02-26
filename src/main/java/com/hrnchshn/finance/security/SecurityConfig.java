@@ -2,7 +2,6 @@ package com.hrnchshn.finance.security;
 
 import com.hrnchshn.finance.constants.Api;
 import lombok.AllArgsConstructor;
-import lombok.val;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -22,12 +21,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        http
-                .cors().and()
-                .csrf().disable()
+        http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, Api.AUTH_ENDPOINT).anonymous()
+                .antMatchers(HttpMethod.POST, Api.USER_SIGN_UP).anonymous()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(getJwtAuthenticationFilter())

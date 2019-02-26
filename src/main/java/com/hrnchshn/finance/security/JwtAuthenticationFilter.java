@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,15 +24,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Date;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    @Value("finance.security.secret-key")
-    private String secretKey = "QkhKSEdZR1lVR0tKTg==";
-    @Value("finance.security.token.expiration")
-    private Integer duration = 7000000;
+    private final String secretKey = "QkhKSEdZR1lVR0tKTg==";
+    private final Integer duration = 7000000;
 
     private final AuthenticationManager authenticationManager;
 
@@ -39,15 +39,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
         try {
-            val user = new ObjectMapper()
-                    .readValue(request.getInputStream(), Credentials.class);
-            val userDetails = FinanceUserDetails.of(user);
-            return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            userDetails.getUsername(),
-                            userDetails.getPassword(),
-                            userDetails.getAuthorities())
-            );
+                Credentials credentials = new ObjectMapper()
+                        .readValue(request.getInputStream(), Credentials.class);
+                val userDetails = FinanceUserDetails.of(credentials);
+                return authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails.getUsername(),
+                                userDetails.getPassword(),
+                                Collections.emptySet())
+                );
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -58,13 +58,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication auth) throws IOException, ServletException {
-        val claims = Jwts.claims();
-        claims.setSubject(((FinanceUserDetails) auth.getPrincipal()).getUsername());
-        String token = Jwts.builder()
-                .setClaims(claims)
-                .setExpiration(new Date(System.currentTimeMillis() + duration))
-                .signWith(SignatureAlgorithm.HS512,secretKey)
-                .compact();
-        response.addHeader(Api.AUTH_HEADER, Api.BEARER + token);
+            val claims = Jwts.claims();
+            claims.setSubject(((FinanceUserDetails) auth.getPrincipal()).getUsername());
+            String token = Jwts.builder()
+                    .setClaims(claims)
+                    .setExpiration(new Date(System.currentTimeMillis() + duration))
+                    .signWith(SignatureAlgorithm.HS512,secretKey)
+                    .compact();
+            response.addHeader(Api.AUTH_HEADER, Api.BEARER + token);
+
     }
 }
