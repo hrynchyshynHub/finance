@@ -13,7 +13,7 @@ public class TransactionToTransactionDtoConverter implements EntityToDtoConverte
     @Override
     public Transaction doForward(TransactionDto transactionDto, Transaction transaction) {
         transaction = Optional.ofNullable(transaction)
-                .orElse(new Transaction());
+                              .orElse(new Transaction());
         transaction.setIsIncoming(transactionDto.getIsIncoming());
         transaction.setValue(transactionDto.getValue());
         return transaction;
@@ -22,6 +22,7 @@ public class TransactionToTransactionDtoConverter implements EntityToDtoConverte
     @Override
     public TransactionDto doBackward(Transaction transaction) {
         return TransactionDto.builder()
+                .budgetId(transaction.getBudget().getId())
                 .id(transaction.getId())
                 .isIncoming(transaction.getIsIncoming())
                 .value(transaction.getValue())

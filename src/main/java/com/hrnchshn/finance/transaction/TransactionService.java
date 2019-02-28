@@ -1,10 +1,11 @@
 package com.hrnchshn.finance.transaction;
 
-import com.hrnchshn.finance.auser.AUser;
 
 /**
  * @author ivan.hrynchyshyn
  */
 public interface TransactionService {
-    TransactionDto createTransaction(TransactionDto transactionDto, AUser user);
+    TransactionDto createTransaction(TransactionDto transactionDto);
+    void updateTransaction(Long id, TransactionDto transactionDto);
+    void deleteTransaction(Long id);
 }

@@ -1,15 +1,9 @@
 package com.hrnchshn.finance.transaction;
 
-import com.hrnchshn.finance.auser.AUser;
-import com.hrnchshn.finance.auser.AUserRepository;
 import com.hrnchshn.finance.constants.Api;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 
 /**
  * @author ivan.hrynchyshyn
@@ -20,11 +14,19 @@ import java.security.Principal;
 public class TransactionController {
 
     private final TransactionService transactionService;
-    private final AUserRepository userService;
 
     @PostMapping
-    private TransactionDto createTransaction(@RequestBody TransactionDto transactionDto, Principal principal) {
-        AUser user = userService.findByUsername(principal.getName());
-        return transactionService.createTransaction(transactionDto, user);
+    private TransactionDto createTransaction(@RequestBody TransactionDto transactionDto) {
+        return transactionService.createTransaction(transactionDto);
+    }
+
+    @PutMapping("/{id}")
+    private void updateTransaction(@PathVariable("id")Long id, @RequestBody TransactionDto transactionDto) {
+        transactionService.updateTransaction(id, transactionDto);
+    }
+
+    @DeleteMapping("/{id}")
+    private void deleteTransaction(@PathVariable("id")Long id) {
+        transactionService.deleteTransaction(id);
     }
 }

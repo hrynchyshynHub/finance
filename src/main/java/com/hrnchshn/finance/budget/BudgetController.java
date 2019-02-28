@@ -1,6 +1,7 @@
 package com.hrnchshn.finance.budget;
 
 import com.hrnchshn.finance.constants.Api;
+import com.hrnchshn.finance.transaction.TransactionDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,11 @@ public class BudgetController {
     @GetMapping("/{id}")
     public BudgetDto getBudget(@PathVariable("id") Long id){
         return budgetService.getBudgetById(id);
+    }
+
+    @GetMapping("/{id}/transactions")
+    public List<TransactionDto> getBudgetTransactions(@PathVariable("id") Long id){
+        return budgetService.getBudgetTransactions(id);
     }
 
     @PostMapping

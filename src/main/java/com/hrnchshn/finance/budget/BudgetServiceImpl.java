@@ -2,6 +2,8 @@ package com.hrnchshn.finance.budget;
 
 import com.hrnchshn.finance.auser.AUser;
 import com.hrnchshn.finance.auser.AUserRepository;
+import com.hrnchshn.finance.transaction.TransactionDto;
+import com.hrnchshn.finance.transaction.TransactionToTransactionDtoConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ public class BudgetServiceImpl implements BudgetService {
     private final AUserRepository userRepository;
     private final BudgetRepository budgetRepository;
     private final BudgetToBudgetDtoConverter budgetConverter;
+    private final TransactionToTransactionDtoConverter transactionToTransactionDtoConverter;
 
     @Override
     public BudgetDto saveBudget(BudgetDto budgetDto) {
@@ -50,6 +53,13 @@ public class BudgetServiceImpl implements BudgetService {
     @Override
     public List<BudgetDto> getAll() {
         return budgetConverter.doBackward(budgetRepository.findAllByUser(getAuthUser()));
+    }
+
+    @Override
+    public List<TransactionDto> getBudgetTransactions(Long budgetId) {
+        Budget budget = budgetRepository.findById(budgetId)
+                .orElseThrow(EntityNotFoundException::new);
+        return transactionToTransactionDtoConverter.doBackward(budget.getTransactions());
     }
 
     private AUser getAuthUser(){

@@ -18,7 +18,6 @@ public class AUserToAUserDtoConverter implements EntityToDtoConverter<AUser, AUs
         setIfNotNull(user::setFullName, aUserDto.getFullName());
         setIfNotNull(user::setNickname, aUserDto.getNickname());
         setIfNotNull(user::setUsername, aUserDto.getUsername());
-        if(user.getPassword() == null) user.setPassword(aUserDto.getPassword());
         return user;
     }
 

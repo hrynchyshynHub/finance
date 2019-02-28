@@ -1,6 +1,6 @@
 package com.hrnchshn.finance.transaction;
 
-import com.hrnchshn.finance.auser.AUser;
+import com.hrnchshn.finance.budget.Budget;
 import com.hrnchshn.finance.common.EntityBase;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,5 +22,5 @@ public class Transaction extends EntityBase {
     private Double value;
     private Boolean isIncoming;
     @ManyToOne
-    private AUser user;
+    private Budget budget;
 }

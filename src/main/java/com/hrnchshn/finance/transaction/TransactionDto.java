@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TransactionDto {
     private Long id;
+    private Long budgetId;
     private Double value;
     private Boolean isIncoming;
 }

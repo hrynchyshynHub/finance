@@ -1,6 +1,8 @@
 package com.hrnchshn.finance.budget;
 
 
+import com.hrnchshn.finance.transaction.TransactionDto;
+
 import java.util.List;
 
 /**
@@ -12,4 +14,5 @@ public interface BudgetService {
     void deleteBudget(Long id);
     BudgetDto getBudgetById(Long id);
     List<BudgetDto> getAll();
+    List<TransactionDto> getBudgetTransactions(Long budgetId);
 }
