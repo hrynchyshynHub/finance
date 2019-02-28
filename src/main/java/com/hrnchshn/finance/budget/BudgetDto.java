@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 /**
  * @author ivan.hrynchyshyn
  */
@@ -13,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class TransactionDto {
+public class BudgetDto {
     private Long id;
-    private Double value;
-    private Boolean isIncoming;
     private String currencyType;
+    private String name;
+    private String description;
 }

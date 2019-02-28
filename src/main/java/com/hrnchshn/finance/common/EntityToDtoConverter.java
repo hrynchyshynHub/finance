@@ -1,6 +1,8 @@
 package com.hrnchshn.finance.common;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -11,6 +13,8 @@ public interface EntityToDtoConverter< Entity extends EntityBase, DTO > {
     DTO doBackward(Entity entity);
 
     default List<DTO> doBackward(List<Entity> entity){
+        entity = Optional.ofNullable(entity)
+                .orElse(new ArrayList<>());
         return entity.stream().map(this::doBackward).collect(Collectors.toList());
     }
 

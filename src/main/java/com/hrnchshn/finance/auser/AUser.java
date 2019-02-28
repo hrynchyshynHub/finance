@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
-import com.hrnchshn.finance.budget.Transaction;
+import com.hrnchshn.finance.transaction.Transaction;
 import com.hrnchshn.finance.common.EntityBase;
 import com.hrnchshn.finance.money.Money;
 import com.hrnchshn.finance.note.Task;

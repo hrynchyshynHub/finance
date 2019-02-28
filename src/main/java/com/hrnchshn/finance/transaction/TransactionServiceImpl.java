@@ -1,4 +1,4 @@
-package com.hrnchshn.finance.budget;
+package com.hrnchshn.finance.transaction;
 
 import com.hrnchshn.finance.auser.AUser;
 import com.hrnchshn.finance.auser.AUserRepository;
