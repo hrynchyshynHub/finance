@@ -15,7 +15,7 @@ public class TransactionToTransactionDtoConverter implements EntityToDtoConverte
         transaction = Optional.ofNullable(transaction)
                               .orElse(new Transaction());
         transaction.setIsIncoming(transactionDto.getIsIncoming());
-        transaction.setValue(transactionDto.getValue());
+        transaction.setValue(transactionDto.getIsIncoming() ? transactionDto.getValue() : 0 - transactionDto.getValue());
         return transaction;
     }
 

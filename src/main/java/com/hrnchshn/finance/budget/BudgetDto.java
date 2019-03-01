@@ -17,4 +17,5 @@ public class BudgetDto {
     private String currencyType;
     private String name;
     private String description;
+    private Double totalAmount;
 }

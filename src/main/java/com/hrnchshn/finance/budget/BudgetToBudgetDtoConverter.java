@@ -16,18 +16,24 @@ public class BudgetToBudgetDtoConverter implements EntityToDtoConverter<Budget, 
         budget = Optional.ofNullable(budget)
                          .orElse(new Budget());
         setIfNotNull(budget::setDescription, budgetDto.getDescription());
-        setIfNotNull(budget::setName, budgetDto.getName());
-        setIfNotNull(budget::setCurrencyType, Budget.CurrencyType.valueOf(budgetDto.getCurrencyType()));
+        setIfNotNullAndNotEmpty(budget::setName, budgetDto.getName());
+        if(budgetDto.getCurrencyType() != null){
+            setIfNotNull(budget::setCurrencyType, Budget.CurrencyType.valueOf(budgetDto.getCurrencyType()));
+        }
         return budget;
     }
 
     @Override
     public BudgetDto doBackward(Budget budget) {
+        String type = Optional.ofNullable(budget.getCurrencyType())
+                .map(Budget.CurrencyType::name)
+                .orElse(null);
         return BudgetDto.builder()
                 .id(budget.getId())
                 .name(budget.getName())
+                .totalAmount(budget.getTotalAmount())
                 .description(budget.getDescription())
-                .currencyType(budget.getCurrencyType().name())
+                .currencyType(type)
                 .build();
     }
 }

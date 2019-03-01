@@ -23,4 +23,10 @@ public interface EntityToDtoConverter< Entity extends EntityBase, DTO > {
             setter.accept(value);
         }
     }
+    default void setIfNotNullAndNotEmpty(final Consumer<String> setter,  String value){
+        if(value == null || value.isEmpty()){
+            throw new RuntimeException("Can`t save empty field");
+        }
+        setter.accept(value);
+    }
 }
