@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 /**
  * @author ivan.hrynchyshyn
@@ -22,6 +23,7 @@ public class TransactionServiceImpl implements TransactionService{
     private final TransactionToTransactionDtoConverter transactionToTransactionDtoConverter;
     private final TransactionToTransactionDtoConverter converter;
     private final BudgetRepository budgetRepository;
+    private final AUserRepository userRepository;
 
 
     @Override
@@ -30,7 +32,15 @@ public class TransactionServiceImpl implements TransactionService{
         Budget budget = budgetRepository.findById(transactionDto.getBudgetId())
                         .orElseThrow(EntityNotFoundException::new);
         newTransaction.setBudget(budget);
+        budget.getTransactions().add(newTransaction);
+        transactionRepository.save(newTransaction);
+        budgetRepository.save(budget);
         return converter.doBackward(newTransaction);
+    }
+
+    @Override
+    public List<TransactionDto> getTransactions() {
+        return transactionToTransactionDtoConverter.doBackward(transactionRepository.findAll(getAuthUser()));
     }
 
     @Override
@@ -45,4 +55,11 @@ public class TransactionServiceImpl implements TransactionService{
         transactionRepository.deleteById(id);
     }
 
+    private AUser getAuthUser(){
+        String username = String.class.cast(SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal());
+        return userRepository.findByUsername(username);
+    }
 }

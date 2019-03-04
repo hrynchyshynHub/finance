@@ -17,6 +17,8 @@ public class BudgetToBudgetDtoConverter implements EntityToDtoConverter<Budget, 
                          .orElse(new Budget());
         setIfNotNull(budget::setDescription, budgetDto.getDescription());
         setIfNotNullAndNotEmpty(budget::setName, budgetDto.getName());
+        setIfNotNull(budget::setTotalAmount, budgetDto.getTotalAmount());
+        setIfNotNull(budget::setGoalAmount, budgetDto.getGoalAmount());
         if(budgetDto.getCurrencyType() != null){
             setIfNotNull(budget::setCurrencyType, Budget.CurrencyType.valueOf(budgetDto.getCurrencyType()));
         }
@@ -32,6 +34,7 @@ public class BudgetToBudgetDtoConverter implements EntityToDtoConverter<Budget, 
                 .id(budget.getId())
                 .name(budget.getName())
                 .totalAmount(budget.getTotalAmount())
+                .goalAmount(budget.getGoalAmount())
                 .description(budget.getDescription())
                 .currencyType(type)
                 .build();

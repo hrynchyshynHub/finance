@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PreUpdate;
 import java.util.List;
 
 /**
@@ -26,7 +25,8 @@ public class Budget extends EntityBase {
     private CurrencyType currencyType;
     private String name;
     private String description;
-    private Double totalAmount;
+    private Double totalAmount = 0d;
+    private Double goalAmount = 0d;
     @ManyToOne
     private AUser user;
     @OneToMany
@@ -34,11 +34,6 @@ public class Budget extends EntityBase {
 
     public enum CurrencyType{
         EUR, USD, UAH;
-    }
-
-    @PreUpdate
-    public void updateTotalAmount(){
-        setTotalAmount(transactions.stream().mapToDouble(Transaction::getValue).sum());
     }
 
 }

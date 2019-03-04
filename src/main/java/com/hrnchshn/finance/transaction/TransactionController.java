@@ -4,6 +4,8 @@ import com.hrnchshn.finance.constants.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * @author ivan.hrynchyshyn
@@ -14,6 +16,11 @@ import org.springframework.web.bind.annotation.*;
 public class TransactionController {
 
     private final TransactionService transactionService;
+
+    @GetMapping
+    public List<TransactionDto> getTransactions() {
+        return transactionService.getTransactions();
+    }
 
     @PostMapping
     private TransactionDto createTransaction(@RequestBody TransactionDto transactionDto) {

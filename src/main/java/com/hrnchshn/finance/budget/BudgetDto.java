@@ -18,4 +18,5 @@ public class BudgetDto {
     private String name;
     private String description;
     private Double totalAmount;
+    private Double goalAmount;
 }
