@@ -13,6 +13,6 @@ import java.util.List;
  */
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
-    @Query("select t from Transaction t where t.budget.user =:user")
+    @Query("select t from Transaction t where t.budget.user =:user order by t.created desc")
     List<Transaction> findAll(@Param("user") AUser user);
 }
