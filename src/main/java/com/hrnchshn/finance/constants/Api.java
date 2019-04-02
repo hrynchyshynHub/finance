@@ -10,6 +10,7 @@ public interface Api {
     String CURRENCY_PATH = "/currency";
     String TRANSACTIO_PATH = "/transaction";
     String BUDGET_PATH = "/budget";
+    String NEWS_PATH = "/news";
 
     /**************************************
      * Currencies                         *

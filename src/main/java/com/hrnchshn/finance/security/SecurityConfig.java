@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsUtils;
 
 
 @EnableWebSecurity
@@ -27,18 +28,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(getJwtAuthenticationFilter())
                 .addFilter(new JwtAuthorizationFilter(authenticationManager()))
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, Api.USER_SIGN_UP ,Api.AUTH_ENDPOINT, "**/error").anonymous()
+                .antMatchers(HttpMethod.POST, Api.USER_SIGN_UP, Api.AUTH_ENDPOINT, "**/error").anonymous()
+                .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .cors().configurationSource((request) -> {
-                    CorsConfiguration corsConfiguration = new CorsConfiguration();
-                    corsConfiguration.applyPermitDefaultValues();
-                    corsConfiguration.addExposedHeader("Authorization");
-                    corsConfiguration.setMaxAge(3600L);
-                    return corsConfiguration;
-                })
-                .and()
                 .csrf().disable()
+                .cors().configurationSource((request) -> {
+                        CorsConfiguration corsConfiguration = new CorsConfiguration();
+                        corsConfiguration.applyPermitDefaultValues();
+                        corsConfiguration.setMaxAge(1800L);
+                        corsConfiguration.addExposedHeader("Authorization");
+                        return corsConfiguration;
+                    })
+                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 

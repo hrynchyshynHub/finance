@@ -52,7 +52,7 @@ public class BudgetServiceImpl implements BudgetService {
 
     @Override
     public List<BudgetDto> getAll() {
-        return budgetConverter.doBackward(budgetRepository.findAllByUser(getAuthUser()));
+        return budgetConverter.doBackward(budgetRepository.findAllByUserOrderByCreated(getAuthUser()));
     }
 
     @Override

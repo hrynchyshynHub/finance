@@ -22,7 +22,7 @@ public class WebCall {
     }
 
     public enum PayloadType {
-        text, json, pdf
+        text, json, pdf, formData
     }
 
     private HttpVerb httpVerb;
@@ -61,6 +61,8 @@ public class WebCall {
         switch (payloadType) {
             case json:
                 return "application/json; charset=utf-8";
+            case formData:
+                return "application/x-www-form-urlencoded; charset=UTF-8";
             case pdf:
                 return "application/pdf";
             case text:

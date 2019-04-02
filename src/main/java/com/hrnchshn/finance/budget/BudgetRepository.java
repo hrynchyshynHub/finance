@@ -11,5 +11,5 @@ import java.util.List;
  */
 @Repository
 public interface BudgetRepository extends JpaRepository<Budget, Long> {
-    List<Budget> findAllByUser(AUser user);
+    List<Budget> findAllByUserOrderByCreated(AUser user);
 }

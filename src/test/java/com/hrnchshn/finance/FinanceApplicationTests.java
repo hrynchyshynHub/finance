@@ -21,14 +21,15 @@ public class FinanceApplicationTests {
 
 	@Test
 	public void callback() throws Exception{
-		CompletableFuture<CurrencyModel> noteTask =
-				CompletableFuture.supplyAsync(()-> new BankUaCurrencyProvider().getCurrency());
+		CompletableFuture.supplyAsync(()-> new BankUaCurrencyProvider().getCurrency())
+		.thenAccept(x -> System.out.print(x.getEurValueBuy()));
 
-		CompletableFuture<String> usdValue = noteTask.thenApply(currencyModel -> {
-			System.out.println("This is callback");
-			System.out.println(currencyModel);
-			return currencyModel.getUsdValueBuy();
-		});
+		Thread.sleep(3000);
+//		CompletableFuture<String> usdValue = noteTask.thenApply(currencyModel -> {
+//			System.out.println("This is callback");
+//			System.out.println(currencyModel);
+//			return currencyModel.getUsdValueBuy();
+//		});
 	}
 }
 

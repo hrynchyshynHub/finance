@@ -6,5 +6,7 @@ import java.io.IOException;
 
 public interface CurrencyProvider {
 
-    CurrencyModel getCurrency() throws IOException;
+    CurrencyModel getCurrency();
+
+    void pullCurrency();
 }
