@@ -31,7 +31,9 @@ public class BankUaCurrencyProvider implements CurrencyProvider {
             Gson gson = new Gson();
             UaBankResponseElement[] currencies = gson.fromJson(response, UaBankResponseElement[].class);
             currencyModel = transformer.backWard(Arrays.asList(currencies));
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            //ignore
+        }
         return currencyModel;
     }
 

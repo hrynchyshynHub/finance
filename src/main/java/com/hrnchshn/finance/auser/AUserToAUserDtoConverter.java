@@ -18,6 +18,8 @@ public class AUserToAUserDtoConverter implements EntityToDtoConverter<AUser, AUs
         setIfNotNull(user::setFullName, aUserDto.getFullName());
         setIfNotNull(user::setNickname, aUserDto.getNickname());
         setIfNotNull(user::setUsername, aUserDto.getUsername());
+        setIfNotNull(user::setEmail, aUserDto.getEmail());
+        setIfNotNull(user::setPhone, aUserDto.getPhone());
         return user;
     }
 
@@ -29,6 +31,8 @@ public class AUserToAUserDtoConverter implements EntityToDtoConverter<AUser, AUs
                 .age(aUser.getAge())
                 .fullName(aUser.getFullName())
                 .nickname(aUser.getNickname())
+                .email(aUser.getEmail())
+                .phone(aUser.getPhone())
                 .build();
     }
 

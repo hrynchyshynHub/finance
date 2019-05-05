@@ -16,8 +16,7 @@ public class UzGovPoller extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        //10 sec for test purpose
-        from("timer:journeyAvailabilityManager?period=5s")
+        from("timer:journeyAvailabilityManager?period=1h")
                 .log("checking availability")
                 .bean(availabilityManager, "checkJourneySubscriptionsAvailability");
     }

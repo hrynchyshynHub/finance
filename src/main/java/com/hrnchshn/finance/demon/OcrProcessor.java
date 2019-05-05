@@ -18,7 +18,7 @@ public class OcrProcessor implements Processor {
         String path = String.class.cast(exchange.getIn().getHeader("CamelFileAbsolutePath"));
         Ocr.setUp(); // one time setup
         Ocr ocr = new Ocr(); // create a new OCR engine
-        ocr.startEngine("ukr", Ocr.SPEED_FASTEST); // English
+        ocr.startEngine("ukr", Ocr.SPEED_FASTEST);
         String ocrResult = ocr.recognize(new File[] {new File(path)},
                 Ocr.RECOGNIZE_TYPE_TEXT, Ocr.OUTPUT_FORMAT_PLAINTEXT); // PLAINTEXT | XML | PDF | RTF
         System.out.println("Result: " + ocrResult);

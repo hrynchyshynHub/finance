@@ -113,12 +113,9 @@ public class WebCall {
             try {
                 reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
             } catch (Exception ex) {
-//            log.debug("Could not read success response: " + ex);
                 try {
                     reader = new BufferedReader(new InputStreamReader(urlConnection.getErrorStream(), "UTF-8"));
-                } catch (Exception exx) {
-//                log.debug("Could not read error response: " + exx);
-                }
+                } catch (Exception exx) {}
             } finally {
                 String responseBody = null;
                 if (reader != null) {

@@ -22,6 +22,8 @@ public class AUser extends EntityBase{
     private String fullName;
     private String username;
     private String password;
+    private String email;
+    private String phone;
     private Integer age;
 
     @OneToMany(mappedBy = "user")

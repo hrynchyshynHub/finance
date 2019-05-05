@@ -27,8 +27,6 @@ public class XmlProcessor implements Processor {
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document document = builder.parse(new ByteArrayInputStream(xml.getBytes()));
 
-        System.out.println(document);
-
 
     }
 }
