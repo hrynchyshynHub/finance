@@ -3,11 +3,9 @@ package com.hrnchshn.finance.subuz.managers;
 import com.hrnchshn.finance.constants.Api;
 import com.hrnchshn.finance.subuz.dao.JourneySubscriptionDao;
 import com.hrnchshn.finance.subuz.entity.JourneySubscription;
-import com.hrnchshn.finance.subuz.entity.JourneySubscriptionDto;
+import com.hrnchshn.finance.subuz.entity.Train;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.Charsets;
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -22,6 +20,9 @@ import org.springframework.stereotype.Component;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -33,16 +34,32 @@ import java.util.List;
 public class JourneyAvailabilityManager {
 
     private final JourneySubscriptionDao journeySubscriptionDao;
-
     private final UzGovResponseParser responseParser;
+    private final EmailSenderManager emailSenderManager;
+    private final Map<String, List<Train>> map = new ConcurrentHashMap<>();
+
 
     public void checkJourneySubscriptionsAvailability() {
         List<JourneySubscription> subscriptions = journeySubscriptionDao.findByIsActiveTrue();
-        subscriptions.forEach(this::callUzGov);
+        for (JourneySubscription subscription : subscriptions){
+            List<Train> availableForThisUser = callUzGov(subscription);
+            List<Train> trains = Optional.ofNullable(map.get(subscription.getUser().getEmail()))
+                    .orElse(new ArrayList<>());
+            trains.addAll(availableForThisUser);
+            map.put(subscription.getUser().getEmail(), trains);
+        }
+
+        for(String receiver : map.keySet()){
+           List<Train> available =  map.get(receiver);
+           if(available != null && !available.isEmpty()){
+               emailSenderManager.sendEmail(receiver, available, "Available train found");
+           }
+        }
     }
 
 
-    private void callUzGov(JourneySubscription subscription) {
+    private List<Train> callUzGov(JourneySubscription subscription) {
+        List<Train> availableTrains = new ArrayList<>();
         try {
             subscription.incrementCallAttempt();
             HttpClient httpClient = HttpClients.createDefault();
@@ -57,10 +74,11 @@ public class JourneyAvailabilityManager {
             HttpResponse response = httpClient.execute(post);
             HttpEntity entity = response.getEntity();
             String json = EntityUtils.toString(entity, StandardCharsets.UTF_8);
-            responseParser.parse(subscription, json);
+            availableTrains = responseParser.parseAndGetAvailableTrains(subscription, json);
             journeySubscriptionDao.save(subscription);
         } catch (Exception e) {
             log.error("Can`t call uzgov.service",  e);
         }
+        return availableTrains;
     }
 }

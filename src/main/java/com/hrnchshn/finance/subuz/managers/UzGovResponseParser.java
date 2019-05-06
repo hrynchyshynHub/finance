@@ -23,18 +23,18 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UzGovResponseParser {
 
-    private final EmailSenderManager emailSenderManager;
     private static final String SIT_NOT_FOUND = "По заданому Вами напрямку місць немає";
     private static final String TRAIN_NOT_FOUND = "По заданому Вами напрямку немає маршуту";
 
-    public void parse(JourneySubscription subscription, String response){
+    public List<Train> parseAndGetAvailableTrains(JourneySubscription subscription, String response){
         log.info("Parsing response : " + response);
+        List<Train> availablePlacesTrains = new ArrayList<>();
         JSONObject json = new JSONObject(response);
         JSONObject data = json.getJSONObject("data");
         if(data.has("warning")) {
             String warning = data.getString("warning");
             subscription.setWarningMessage(warning);
-            if(warning.equals(SIT_NOT_FOUND)) return;
+            if(warning.equals(SIT_NOT_FOUND)) return availablePlacesTrains;
         }
 
         if(data.has("list") && data.getJSONArray("list").isEmpty()){
@@ -47,22 +47,12 @@ public class UzGovResponseParser {
 
             List<Train> trains = toTrainEntity(trainsList);
 
-            List<Train> availablePlacesTrains = trains.stream()
+            availablePlacesTrains = trains.stream()
                     .filter(train -> !train.getPlaces().isEmpty())
                     .collect(Collectors.toList());
-
-            if(!availablePlacesTrains.isEmpty()){
-                emailSenderManager.sendEmail(
-                        subscription.getUser().getEmail(),
-                        availablePlacesTrains,
-                        "Available train found");
-//                subscription.setActive(false);
-                log.info("Mail has been sent");
-            }
         }
+        return availablePlacesTrains;
     }
-
-
 
 
 
