@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 /**
  * @author ivan.hrynchyshyn
  */
@@ -14,8 +16,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class JourneySubscriptionDto {
     private Long id;
-    private Long from;
-    private Long to;
+    private StationDTO from;
+    private StationDTO to;
     private String date;
     private String time;
     private String warningMessage;
@@ -23,10 +25,12 @@ public class JourneySubscriptionDto {
 
     public JourneySubscription toEntity(){
         return JourneySubscription.builder()
-                .date(date)
-                .srcPlace(from)
+                .date(date.substring(0, 10))
+                .srcPlace(from.getValue())
+                .srcTitle(from.getTitle())
                 .time(time)
-                .destPlace(to)
+                .destPlace(to.getValue())
+                .destTitle(to.getTitle())
                 .isActive(isActive)
                 .build();
     }

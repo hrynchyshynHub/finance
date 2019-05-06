@@ -21,6 +21,8 @@ import javax.persistence.ManyToOne;
 public class JourneySubscription extends EntityBase {
     private Long srcPlace;
     private Long destPlace;
+    private String srcTitle;
+    private String destTitle;
     private String date;
     private String time;
     private String warningMessage;
@@ -36,8 +38,8 @@ public class JourneySubscription extends EntityBase {
                 .id(id)
                 .date(date)
                 .time(time)
-                .from(srcPlace)
-                .to(destPlace)
+                .from(StationDTO.builder().title(srcTitle).value(srcPlace).build())
+                .to(StationDTO.builder().title(destTitle).value(destPlace).build())
                 .isActive(isActive)
                 .warningMessage(warningMessage)
                 .build();

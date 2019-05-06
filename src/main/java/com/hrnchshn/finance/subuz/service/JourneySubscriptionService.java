@@ -33,8 +33,8 @@ public class JourneySubscriptionService {
                 .orElseThrow(()-> new EntityNotFoundException("cant_find_given_subscription"));
 
         foundSubscription.setDate(subscription.getDate());
-        foundSubscription.setSrcPlace(subscription.getFrom());
-        foundSubscription.setDestPlace(subscription.getTo());
+        foundSubscription.setSrcPlace(subscription.getFrom().getValue());
+        foundSubscription.setDestPlace(subscription.getTo().getValue());
         foundSubscription.setWarningMessage(subscription.getWarningMessage());
         return journeySubscriptionDao.save(foundSubscription).toDto();
     }

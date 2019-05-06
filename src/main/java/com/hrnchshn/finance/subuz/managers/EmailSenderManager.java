@@ -1,13 +1,21 @@
 package com.hrnchshn.finance.subuz.managers;
 
+import com.hrnchshn.finance.subuz.entity.Train;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author ivan.hrynchyshyn
@@ -18,19 +26,47 @@ import javax.mail.internet.MimeMessage;
 public class EmailSenderManager {
 
     private final JavaMailSender sender;
+    private final Configuration freemarkerConfig;
 
-    public void sendEmail(String receiver, String body, String subject){
+    public void sendEmail(String receiver, List<Train> availableTrains, String subject){
         try {
             MimeMessage message = sender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message);
+            MimeMessageHelper helper = new MimeMessageHelper(message,
+                    MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+                    StandardCharsets.UTF_8.name());
+
+
+            freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
+            Template t = freemarkerConfig.getTemplate("email-template.ftl");
+            String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, toMap(availableTrains));
+
             //TODO: Replace hardcoded receiver mail.
             helper.setTo("vaniahrynchyshyn@gmail.com");
-            helper.setText(body);
+            helper.setText(html, true);
             helper.setSubject(subject);
             sender.send(message);
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             log.error("Can`t send email to " + receiver, e);
         }
 
+    }
+
+    private Map<String, Train> toMap(List<Train> trains){
+        HashMap map =  new HashMap<>();
+        map.put("trains", trains.stream()
+                .map(this::toTrainDetails)
+                .collect(Collectors.toList()));
+        return map;
+    }
+
+    private Map<String, String> toTrainDetails(Train train){
+        HashMap map =  new HashMap<>();
+        map.put("number",  train.getTrainNumber());
+        map.put("arrival",  train.getArrivalDateTime());
+        map.put("departing",  train.getDepartingDateTime());
+        map.put("from",  train.getFromStation());
+        map.put("to",  train.getToStation());
+        map.put("places",  train.getPlaces());
+        return map;
     }
 }
