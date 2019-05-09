@@ -1,10 +1,14 @@
 package com.hrnchshn.finance.subuz.managers;
 
+import com.hrnchshn.finance.auser.AUser;
 import com.hrnchshn.finance.subuz.entity.Train;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.camel.Exchange;
+import org.apache.camel.Message;
+import org.apache.camel.Processor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -23,18 +27,30 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class EmailSenderManager {
+public class EmailSenderManager implements Processor {
 
     private final JavaMailSender sender;
     private final Configuration freemarkerConfig;
 
+    @Override
+    public void process(Exchange exchange) throws Exception {
+        Message message = exchange.getIn();
+        Map<AUser, List<Train>> map = message.getBody(Map.class);
+        for (AUser receiver : map.keySet()) {
+            List<Train> available = map.get(receiver);
+            if (available != null && !available.isEmpty()) {
+                sendEmail(receiver.getEmail(), available, "Available train found");
+            }
+        }
+    }
+
     public void sendEmail(String receiver, List<Train> availableTrains, String subject){
         try {
+            log.info("Sending email message...");
             MimeMessage message = sender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message,
                     MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                     StandardCharsets.UTF_8.name());
-
 
             freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
             Template t = freemarkerConfig.getTemplate("email-template.ftl");
