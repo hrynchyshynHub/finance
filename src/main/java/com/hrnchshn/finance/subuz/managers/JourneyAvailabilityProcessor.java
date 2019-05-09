@@ -24,7 +24,6 @@ import org.springframework.stereotype.Component;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 
 /**
@@ -33,7 +32,7 @@ import java.util.stream.Collectors;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class JourneyAvailabilityManager implements Processor {
+public class JourneyAvailabilityProcessor implements Processor {
 
     private final JourneySubscriptionDao journeySubscriptionDao;
     private final UzGovResponseParser responseParser;

@@ -1,8 +1,8 @@
 package com.hrnchshn.finance.subuz.pollers;
 
-import com.hrnchshn.finance.subuz.managers.EmailSenderManager;
-import com.hrnchshn.finance.subuz.managers.JourneyAvailabilityManager;
-import com.hrnchshn.finance.subuz.managers.TelegramSenderManager;
+import com.hrnchshn.finance.subuz.managers.EmailSenderProcessor;
+import com.hrnchshn.finance.subuz.managers.JourneyAvailabilityProcessor;
+import com.hrnchshn.finance.subuz.managers.TelegramSenderProcessor;
 import org.apache.camel.BeanInject;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
@@ -11,28 +11,28 @@ import org.springframework.stereotype.Component;
  * @author ivan.hrynchyshyn
  */
 @Component
-public class UzGovPoller extends RouteBuilder {
+public class SubuzMainFlowRouteBuilder extends RouteBuilder {
 
     @BeanInject
-    private JourneyAvailabilityManager availabilityManager;
+    private JourneyAvailabilityProcessor availabilityProcessor;
     @BeanInject
-    private EmailSenderManager emailSenderManager;
+    private EmailSenderProcessor emailSenderProcessor;
     @BeanInject
-    private TelegramSenderManager telegramSenderManager;
+    private TelegramSenderProcessor telegramSenderProcessor;
 
     @Override
     public void configure() throws Exception {
-        from("timer:journeyAvailabilityManager?period=2m")
+        from("timer:journeyAvailabilityTimer?period=2m")
                 .log("checking availability")
-                .process(availabilityManager)
+                .process(availabilityProcessor)
                 .multicast()
                 .parallelProcessing()
                 .to("direct:emailSender", "direct:telegramSender");
 
         from("direct:emailSender")
-                .process(emailSenderManager);
+                .process(emailSenderProcessor);
         from("direct:telegramSender")
-                .process(telegramSenderManager);
+                .process(telegramSenderProcessor);
 //                .to("telegram:bots/750159563:AAGnvO09GP1DiylzSQGr-7Vwxo95DNaQ_KI");
     }
 }

@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class EmailSenderManager implements Processor {
+public class EmailSenderProcessor implements Processor {
 
     private final JavaMailSender sender;
     private final Configuration freemarkerConfig;

@@ -12,7 +12,7 @@ import java.util.Map;
  */
 @Component
 @Slf4j
-public class TelegramSenderManager implements Processor {
+public class TelegramSenderProcessor implements Processor {
     @Override
     public void process(Exchange exchange) throws Exception {
         log.info("Sending telegram message...");
